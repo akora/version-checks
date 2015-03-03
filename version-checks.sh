@@ -1,9 +1,18 @@
 #!/usr/bin/env bash
 
-printf "********************** Version checks **********************\n"
+three_columns="%-14s %-32s %-28s\n"
+four_columns="%-14s %-15s %-16s %-28s\n"
+
+printf "****************************** Version checks ******************************\n"
 
 # the below list is case sensitive!
-packages=(python perl ruby php bash git java VBoxManage vagrant packer node npm)
+packages=(python perl ruby php bash git java node npm)
+
+if [[ "`java -version 2>&1 | awk 'NR==2 {print $1}'`" == "OpenJDK" ]]; then
+  java_origin="OpenJDK"
+else
+  java_origin="Oracle"
+fi
 
 for package in ${packages[@]}; do
   if command -v $package >/dev/null 2>&1; then # one way of checking if package is installed or not
@@ -16,18 +25,19 @@ for package in ${packages[@]}; do
       "php")        version="$(echo `$package -v` | awk '{print $2}' | cut -c1-6)";;
       "bash")       version="$($package --version | awk 'NR==1 {print $4}' | cut -c1-6)";;
       "git")        version="$($package --version | awk '{print $3}')";;
-      "java")       version="$($package -version 2>&1 |awk 'NR==1{ gsub(/"/,""); print $3 }')";;
-      "VBoxManage") version="$($package -v | cut -c1-6)";;
-      "vagrant")    version="$(echo `$package version` | awk '{print $3}')";;
-      "packer")     version="$(echo `$package version` | awk '{print $2}' | cut -c2-)";;
+      "java")       version="$($package -version 2>&1 | awk -F '"' '/version/ {print $2}')" note="($java_origin)";;
       *)            version="$(echo `$package -v`)";;
     esac
     if [[ "$version" =~ "v" ]]; then # remove the initial 'v' where necessary
       version="$(echo $version | cut -c2-)"
     fi
-    printf "%-15s %-15s %-20s\n" $package $version $path
+    if [[ -z "$note" ]]; then # arrange into 3 columns only if there is no note
+      printf "$three_columns" $package $version $path
+    else
+      printf "$four_columns" $package $version $note $path
+    fi
   else
-    printf "%-15s %-15s %-20s\n" $package "------" "not installed"
+    printf "$three_columns" $package "------" "not installed"
   fi
 done
 
