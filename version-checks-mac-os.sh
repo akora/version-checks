@@ -6,7 +6,7 @@ four_columns="%-14s %-15s %-16s %-28s\n"
 printf "****************************** Version checks ******************************\n"
 
 # the below list is case sensitive!
-packages=(python perl ruby php bash git java VBoxManage vagrant ansible packer node npm)
+packages=(python perl ruby php bash git java VBoxManage vagrant ansible packer docker node npm)
 
 if [[ "`java -version 2>&1 | awk 'NR==2 {print $1}'`" == "OpenJDK" ]]; then
   java_origin="OpenJDK"
@@ -31,6 +31,7 @@ for package in ${packages[@]}; do
       "vagrant")    version="$(echo `vagrant version` | awk '{print $3}')";;
       "ansible")    version="$(echo `ansible --version` | awk '{print $2}')";;
       "packer")     version="$(echo `packer version` | awk '{print $2}' | cut -c2-)";;
+      "docker")     version="$($package -v | awk '{print $3}' | cut -c1-5)";;
       *)            version="$(echo `$package -v`)";;
     esac
     if [[ "$version" =~ "v" ]]; then # remove the initial 'v' where necessary
