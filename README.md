@@ -18,11 +18,8 @@ node           ------                           not installed
 npm            ------                           not installed
 ```
 
-This script can be included in your `.profile` or `.bash_profile` to run it at each SSH logins.
+The macOS version of this script is now maintained on GitLab: https://gitlab.com/AndrasKora/macos-shell-version-checks
 
 #### Tested on
 
-* Mac OS X Yosemite 10.10.2
-* Debian 7.8
-* Ubuntu 14.10 32-bit with both Oracle Java & OpenJDK
-* Ubuntu 14.10 64-bit with both Oracle Java & OpenJDK
+* Ubuntu 20.04.1 LTS (Focal Fossa) 64-bit
