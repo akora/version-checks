@@ -23,3 +23,11 @@ The macOS version of this script is now maintained on GitLab: https://gitlab.com
 #### Tested on
 
 * Ubuntu 20.04.1 LTS (Focal Fossa) 64-bit
+
+## NEW!!
+
+Adding a MacOS command line friendly, updated version
+
+#### Tested on
+
+* macOS Monterey 12.3
